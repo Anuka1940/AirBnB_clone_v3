@@ -68,6 +68,28 @@ test_db_storage.py'])
                             "{:s} method needs a docstring".format(func[0]))
 
 
+    def test_get(self):
+        """Test get method"""
+        new_user = User()
+        new_user.save()
+        user_id = new_user.id
+
+        retrieved_user = storage.get(User, user_id)
+        self.assertEqual(retrieved_user, new_user)
+    
+    def test_count(self):
+        """Test count method."""
+        initial_count = storage.count(User)
+
+        new_user1 = User()
+        new_user1.save()
+        new_user2 = User()
+        new_user2.save()
+
+        update_count = storage.count(User)
+        self.assertEqual(update_count, initial_count + 2)
+
+        
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
